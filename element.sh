@@ -17,14 +17,20 @@ else
     ATOMIC_MASS=$($PSQL "select atomic_mass from properties where atomic_number=$ATOMIC_NUMBER")
     MELTING_POINT=$($PSQL "select melting_point_celsius from properties where atomic_number=$ATOMIC_NUMBER")
     BOILING_POINT=$($PSQL "select boiling_point_celsius from properties where atomic_number=$ATOMIC_NUMBER")
-    echo "$ATOMIC_NUMBER" "$SYMBOL" "$NAME" "$TYPE" "$ATOMIC_MASS" "$MELTING_POINT" "$BOILING_POINT"
+    echo "The element with atomic number $ATOMIC_NUMBER is $NAME ($SYMBOL). It's a $TYPE, with a mass of $ATOMIC_MASS amu. $NAME has a melting point of $MELTING_POINT celsius and a boiling point of $BOILING_POINT celsius."
   else
-    echo "No atomic number found"
-    # if no atomic number
     # look for symbol
+    SYMBOL=$($PSQL "select symbol from elements where symbol='$1'")
+    if [[ -z $SYMBOL ]]
+    then
+      echo "$SYMBOL"
+    else
+      echo "null"
+    fi
     # if no symbol
     # look for name
     # if no name
+      # I could not find that element in the database.
   fi
 
 fi
